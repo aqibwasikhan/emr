@@ -1,0 +1,108 @@
+.btn-primary-gradient {
+  @apply bg-gradient-to-br from-[var(--secondary)] via-[var(--gradient-middle)] to-[var(--gradient-end)];
+}
+.btn-primary-gradient:hover {
+  background-image: linear-gradient(
+    137.16deg,
+    var(--secondary) -1.5%,
+    var(--gradient-middle) 70.96%,
+    var(--gradient-end) 126.33%
+  );
+}
+
+.hover-border-primary-gradient:hover{
+ border: 2px solid !important;
+  border-image-slice: 1 !important;
+  border-width: 2px !important;
+ border-image-source: var(--gradient) !important;
+}
+.btn-primary-gradient:active {
+  background-image: none !important;
+}
+.seprater-dashed {
+  @apply border-border border-t-2 border-dashed;
+}
+.seprater-light-gredient {
+  /* @apply from-secondary/20 via-secondary/40 to-primary/20 bg-gradient-to-r; */
+  background: linear-gradient(
+    90deg,
+    #007a8b33 0%,
+    #007a8b66 40%,
+    #59940066 60%,
+    #59940033 100%
+  );
+}
+.page-container-footer {
+  @apply absolute right-0 bottom-0 z-10 flex w-full items-center justify-end gap-2 backdrop-blur-xs;
+}
+ /* .CollapsibleContent[data-state="open"] {
+    animation: slideDown 400ms ease-out;
+  }
+  .CollapsibleContent[data-state="closed"] {
+    animation: slideUp 400ms ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 10%;
+      transform: translateY(-1rem);
+    }
+  }
+
+  @keyframes slideUp {
+    to {
+      opacity: 10%;
+      transform: translateY(-1rem);
+    }
+  } */
+   @theme {
+  --animate-collapsible-down: collapsible-down 0.2s ease-out;
+  --animate-collapsible-up: collapsible-up 0.2s ease-out;
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  
+
+  @keyframes collapsible-down {
+    from {
+      height: 0;
+      opacity: 0;
+    }
+    to {
+      height: var(--radix-collapsible-content-height);
+      opacity: 1;
+    }
+  }
+
+  @keyframes collapsible-up {
+    from {
+      height: var(--radix-collapsible-content-height);
+      opacity: 1;
+    }
+    to {
+      height: 0;
+      opacity: 0;
+    }
+  }
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+      opacity: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+      opacity: 1;
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+      opacity: 1;
+    }
+    to {
+      height: 0;
+      opacity: 0;
+    }
+  }
+}
