@@ -12,6 +12,7 @@ import { getForms } from '@/app/actions/forms';
 export const metadata = {
   title: 'EMR: Add Organization'
 };
+export const dynamic = 'force-dynamic';
 
 export default async function Page() {
   const { config } = await getForms({ param: 'model=Organization' });
