@@ -13,6 +13,7 @@ import AddUserFormWizard from '@/features/user-managment/add-user-form-wizard';
 export const metadata = {
   title: 'EMR: Add User'
 };
+export const dynamic = 'force-dynamic';
 
 export default async function Page() {
   const { config } = await getForms({ param: 'model=User' });
