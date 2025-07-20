@@ -10,6 +10,7 @@ import NextTopLoader from 'nextjs-toploader';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import './globals.css';
 import './theme.css';
+export const dynamic = 'force-dynamic';
 
 const META_THEME_COLORS = {
   light: '#ffffff',
