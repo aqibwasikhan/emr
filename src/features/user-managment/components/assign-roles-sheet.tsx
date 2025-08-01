@@ -19,6 +19,7 @@ import { Separator } from '@/components/ui/separator';
 import { useDebounce } from '@/hooks/use-debounce';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { CustomInput } from '@/components/ui/custom';
 
 export function AssignRolesSheet({
   open,
@@ -76,7 +77,7 @@ export function AssignRolesSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="sm:max-w-[637px]! gap-3">
         <SheetHeader className="pb-1">
-          <SheetTitle className='font-bold'>Assign Roles</SheetTitle>
+          <SheetTitle >Assign Roles</SheetTitle>
           <SheetDescription>
             Choose the user’s role and sub-role for system access control.
           </SheetDescription>
@@ -102,21 +103,20 @@ export function AssignRolesSheet({
                 {selected.map((role) => (
                   <Badge
                     key={role.id}
-                    variant="green"
-                     onClick={() => toggleRole(role)}
+                    variant={role.variant || 'green'}
+                    onClick={() => toggleRole(role)}
                     className="text-xs rounded flex items-center gap-1 pr-2"
                   >
                     {role.name}
                     <X
                       className="h-3 w-3 cursor-pointer"
-                     
+
                     />
                   </Badge>
                 ))}
               </CardContent>
             </Card>
           </div>
-
           {/* Base Role Filters */}
           <div className="mt-6">
             <label className="text-sm font-bold mb-2 block">Suggestions</label>
@@ -145,15 +145,18 @@ export function AssignRolesSheet({
               ))}
             </div>
           </div>
-
           {/* Search */}
           <div className="mt-4">
-            <input
-              type="search"
+            <CustomInput
+              isSearch
+              size="xs"
+              inputClassName="pt-2"
+
+              className='w-full mb-4'
+              type='search'
               placeholder="Search by role name..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full px-3 py-2 text-sm border rounded-md"
             />
           </div>
 
@@ -164,7 +167,7 @@ export function AssignRolesSheet({
               return (
                 <Badge
                   key={role.id}
-                  variant={'green'}
+                 variant={role.variant || 'green'}
                   className={`cursor-pointer text-xs rounded px-3 py-1 ${isSelected ? 'bg-green-100' : ''
                     }`}
                   onClick={() => toggleRole(role)}
@@ -179,7 +182,7 @@ export function AssignRolesSheet({
 
         <SheetFooter className="mt-6">
           <SheetClose asChild>
-            <div className="page-container-footer">
+            <div className="page-container-footer rounded-bl-xl">
               <Button
                 variant="primary"
                 size="lg"

@@ -16,18 +16,28 @@ import { useRouter } from 'next/navigation';
 import { getAllLookupBaseRoles } from '@/app/actions/lookups';
 import { Role } from '@/types/roles';
 
-export default function AssignFacilityForm({ onPrevStep }: { onPrevStep: () => void }) {
+export default function AssignFacilityForm({ onPrevStep, isEdit = false, }: { onPrevStep: () => void; isEdit?: boolean; }) {
   const [selectedFacilities, setSelectedFacilities] = useState<Facility[]>([]);
   const [facilities, setFacilities] = useState<Facility[]>([]);
   const [loading, setLoading] = useState(true);
   const [isSumbitloading, setIsSumbitloading] = useState(false);
-  const { userId, clearUserId } = useUserFormStore();
+  const { userId, clearUserId, orgId, userFacilities, setUserFacilities } = useUserFormStore();
   const [baseRoles, setBaseRoles] = useState<Role[]>([]);
   const router = useRouter();
-
+  useEffect(() => {
+    if (isEdit) {
+      // Also store in Zustand for step 2
+      setSelectedFacilities(userFacilities)
+    }
+  }, [isEdit]);
+  useEffect(() => {
+    setUserFacilities(selectedFacilities)
+  }, [selectedFacilities]);
   const fetchFacilities = async () => {
+    console.log('orgId', orgId)
+    if (!orgId) return;
     try {
-      const res = await getAllFacilitySummary(); // ✅ client-safe function
+      const res = await getAllFacilitySummary(orgId); // ✅ client-safe function
       setFacilities(res || []);
     } catch (error) {
       console.error('Failed to load facilities:', error);
@@ -38,7 +48,6 @@ export default function AssignFacilityForm({ onPrevStep }: { onPrevStep: () => v
   const fetchBaseRoles = async () => {
     try {
       const res = await getAllLookupBaseRoles();
-      console.log('Base roles loaded:', res);
       if (res?.success) {
         setBaseRoles(res.data || []);
       }
@@ -61,10 +70,12 @@ export default function AssignFacilityForm({ onPrevStep }: { onPrevStep: () => v
     };
     setIsSumbitloading(true);
 
-    console.log('Selected facility payload:', payload);
     const result = await assignFacilityToUser(payload);
     if (!result.success) {
-      toast.error(result.message || 'Failed to create user');
+      // toast.error(result.message || 'Failed to create user');
+      // toast.error(extractErrorMessage(result));
+      toast.error(result.errors?.non_field_errors ?? result.message ?? 'An error occurred during login');
+
       setIsSumbitloading(false);
       return;
     }
@@ -85,7 +96,15 @@ export default function AssignFacilityForm({ onPrevStep }: { onPrevStep: () => v
           <p className="text-muted-foreground text-xl">No facilities has been assigned yet</p>
           <SelectFacilitiesSheet
             selected={selectedFacilities}
-            onConfirm={setSelectedFacilities}
+            onConfirm={(newSelected) => {
+              setSelectedFacilities((prev) => {
+                const prevMap = new Map(prev.map(f => [f.id, f]));
+                return newSelected.map((f) => ({
+                  ...f,
+                  assignedRoles: prevMap.get(f.id)?.assignedRoles || [],
+                }));
+              });
+            }}
             facilities={facilities}
           />
         </div>
@@ -94,13 +113,20 @@ export default function AssignFacilityForm({ onPrevStep }: { onPrevStep: () => v
           <div className='flex items-center justify-end mb-2'>
             <SelectFacilitiesSheet
               selected={selectedFacilities}
-              onConfirm={setSelectedFacilities}
+              onConfirm={(newSelected) => {
+                setSelectedFacilities((prev) => {
+                  const prevMap = new Map(prev.map(f => [f.id, f]));
+                  return newSelected.map((f) => ({
+                    ...f,
+                    assignedRoles: prevMap.get(f.id)?.assignedRoles || [],
+                  }));
+                });
+              }}
               facilities={facilities}
             />
           </div>
           <div >
             <Grid className=" gap-y-4" >
-
               {selectedFacilities.map((f) => (
                 <GridItem xs={12} key={f.id}>
                   <AssignedFacilityCard

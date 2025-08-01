@@ -50,7 +50,7 @@ export default function EditOrganizationForm({
         <DynamicFormSections config={config} />
 
         <div className="page-container-footer">
-          <Link href="/organization" className={cn(buttonVariants({ variant: 'tertiary', size: 'lg' }), 'text-xs md:text-sm px-5!')}>
+          <Link href={`/organization/${orgId}`} className={cn(buttonVariants({ variant: 'tertiary', size: 'lg' }), 'text-xs md:text-sm px-5!')}>
             <ChevronLeft /> Back
           </Link>
           <Button variant="primary" size="lg" className="text-xs md:text-sm px-5!" type="submit">

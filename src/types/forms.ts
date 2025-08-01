@@ -12,7 +12,7 @@ export interface FieldConfig {
   minLength?: number;
   maxLength?: number;
   styling?: { xs: number; sm: number; md: number; lg: number; xl: number };
-
+ disabled?: boolean; // ✅ Add this
 }
 export interface SectionConfig {
   id: string;

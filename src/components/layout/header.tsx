@@ -8,6 +8,7 @@ import { ThemeSelector } from '../theme-selector';
 import { ModeToggle } from './ThemeToggle/theme-toggle';
 import Image from 'next/image';
 import { LogoIcon } from '@/icons';
+import Link from 'next/link';
 
 export default function Header() {
   return (
@@ -16,7 +17,9 @@ export default function Header() {
        
         <SidebarTrigger className='-ml-1 block md:hidden' />
         <Separator orientation='vertical' className='mr-2 h-4  block md:hidden' />
+        <Link href={'/overview'} className='cursor-pointer'>
         <LogoIcon />
+        </Link>
         {/* <Breadcrumbs /> */}
       </div>
 

@@ -38,7 +38,7 @@ export default async function Page(props: pageProps) {
           />
           <div className='w-1/4 2xl:w-1/5 max-w-96'>
             
-           <SearchHeader placeholder="Searchs by name or address" isPage={true} />
+           <SearchHeader placeholder="Search by Org name, address" isPage={true} />
           </div>
 
         </div>

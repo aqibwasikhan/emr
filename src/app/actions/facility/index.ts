@@ -159,10 +159,14 @@ export async function getAllFacility({
     );
   }
 }
-export async function getAllFacilitySummary(){
+export async function getAllFacilitySummary(organization?: string | null) {
+
   try {
     const client = await createServerEmrAxios(); // auth required
-    const res = await client.get(`/facility/summary/all`);
+    const queryParams = new URLSearchParams({
+      ...(organization ? { organization } : {})
+    });
+    const res = await client.get(`/facility/summary/all?${queryParams.toString()}`);
     const data = res.data;
 
     if (!data.success) {

@@ -31,15 +31,17 @@ export default function RolesEditForm({ config, initialValues }: {
   const [modulesData, setModulesData] = useState<any[]>(initialValues.modules || []);
   const [selectedPermissions, setSelectedPermissions] = useState<Record<number, Record<number, Set<number>>>>({});
   const [initialized, setInitialized] = useState(false);
-  // useEffect(() => {
-  //   if (initialValues) {
-  //     // reinitialize form values or trigger state updates
-  //     methods.reset({
-  //       ...initialValues,
-  //       module: initialValues.modules?.map((m: any) => m.id) || [],
-  //     });
-  //   }
-  // }, [initialValues]);
+  const [loading, setloading] = useState(false)
+
+  useEffect(() => {
+    if (initialValues) {
+      // reinitialize form values or trigger state updates
+      methods.reset({
+        ...initialValues,
+        module: initialValues.modules?.map((m: any) => m.id) || [],
+      });
+    }
+  }, [initialValues]);
   const initialModuleIds = initialValues.modules?.map((m: any) => m.id) || [];
 
   const schema = generateSchema(config);
@@ -117,6 +119,7 @@ export default function RolesEditForm({ config, initialValues }: {
   };
 
   const onSubmit = async (formData: any) => {
+
     const { module, ...rest } = formData;
     const submission = modulesData.flatMap((mod) =>
       mod.resources
@@ -128,6 +131,7 @@ export default function RolesEditForm({ config, initialValues }: {
         }))
     );
     const payload = { ...rest, submission }
+    setloading(true)
 
 
     const result = await updateRole(initialValues.id, payload);
@@ -135,6 +139,8 @@ export default function RolesEditForm({ config, initialValues }: {
     if (!result.success) {
       setApiErrors(result.errors, methods.setError);
       toast.error(result.message || 'Failed to update role');
+      setloading(false);
+
       return;
     }
 
@@ -162,7 +168,7 @@ export default function RolesEditForm({ config, initialValues }: {
           >
             <ChevronLeft /> Back
           </Link>
-          <Button variant="primary" size="lg" type="submit" className="text-xs md:text-sm px-5!">
+          <Button disabled={loading} variant="primary" size="lg" type="submit" className="text-xs md:text-sm px-5!">
             <Check />
           </Button>
         </div>

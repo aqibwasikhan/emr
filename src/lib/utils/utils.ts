@@ -24,3 +24,16 @@ export function formatBytes(
       : (sizes[i] ?? 'Bytes')
   }`;
 }
+export function getInitials(name: string): string {
+  if (!name) return '';
+
+  // Split by space or dash, filter out empty parts
+  const words = name
+    .split(/[\s-]+/)
+    .filter((word) => /^[A-Za-z]/.test(word)); // only words starting with alphabet
+
+  // Get the first character of the first two words
+  const initials = words.slice(0, 2).map((w) => w[0].toUpperCase());
+
+  return initials.join('');
+}

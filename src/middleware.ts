@@ -19,26 +19,52 @@ import { NextRequest, NextResponse } from 'next/server';
 export function middleware(req: NextRequest) {
   const token = req.cookies.get('accessToken')?.value;
 
-  // Protect all /admin and /overview routes
-  const protectedRoutes = ['/overview', '/admin', '/product', '/organization'];
+  const pathname = req.nextUrl.pathname;
+
+  // Protected routes if user is NOT logged in
+  const protectedRoutes = [
+    '/overview',
+    '/admin',
+    '/product',
+    '/organization',
+    '/roles',
+    '/user-management',
+    '/facility',
+  ];
 
   const isProtected = protectedRoutes.some((path) =>
-    req.nextUrl.pathname.startsWith(path)
+    pathname.startsWith(path)
   );
-if (req.nextUrl.pathname.startsWith('/auth') && token) {
-  const redirectUrl = new URL('/overview', req.url);
-  return NextResponse.redirect(redirectUrl);
-}
+
+  // 🔒 Redirect logged-in users away from auth pages
+  if (pathname.startsWith('/auth') && token) {
+    return NextResponse.redirect(new URL('/overview', req.url));
+  }
+
+  // 🔐 Redirect guests trying to access protected routes
   if (isProtected && !token) {
-    const signInUrl = new URL('/auth/sign-in', req.url);
-    return NextResponse.redirect(signInUrl);
+    return NextResponse.redirect(new URL('/auth/sign-in', req.url));
+  }
+
+  // 🔁 Redirect root '/' to login or overview
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL(token ? '/overview' : '/auth/sign-in', req.url));
   }
 
   return NextResponse.next();
 }
 
-// Match only these routes
+// ✅ Match root + all protected/app routes
 export const config = {
-  matcher: ['/overview', '/admin/:path*', '/user-managments/:path*', '/organization/:path*','/facility/:path*','/roles/:path*'],
+  matcher: [
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    '/',
+    '/overview',
+    '/admin/:path*',
+    '/user-management/:path*',
+    '/organization/:path*',
+    '/facility/:path*',
+    '/roles/:path*',
+    '/auth/:path*',
+  ],
 };
-

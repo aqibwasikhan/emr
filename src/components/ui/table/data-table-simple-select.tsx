@@ -269,7 +269,6 @@ export function DataTableSimpleSelect({
             <CommandGroup>
               {options.map((opt:any,i) => {
                 const isSelected = selectedValues.has(opt.value);
-                console.log('opt', opt, 'isSelected', isSelected);
                 return (
                   <CommandItem
                     key={opt.label+i}

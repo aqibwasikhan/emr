@@ -7,8 +7,9 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { addFacility } from '@/app/actions/facility';
 import { PencilIcon } from '@/icons';
+import { Facility } from '@/types/facilities';
 
-export function AddFacilityCard({ onAddSuccess, organizationId }: { onAddSuccess?: () => void, organizationId: number }) {
+export function AddFacilityCard({ onAddSuccess, organizationId }: { onAddSuccess?: (facility: Facility) => void, organizationId: number }) {
     const [facilityName, setFacilityName] = useState('');
     const [isPending, startTransition] = useTransition();
     const [isEditing, setIsEditing] = useState(false);
@@ -27,15 +28,16 @@ export function AddFacilityCard({ onAddSuccess, organizationId }: { onAddSuccess
                     organizationId,
                 });
                 if (!result.success) {
-                
+
                     toast.error(result?.errors.facilityName ? result?.errors.facilityName : result.message || 'Failed to update organization');
                     return;
                 }
 
-                toast.success(result.message ||'Facility created successfully');
+                toast.success(result.message || 'Facility created successfully');
                 setFacilityName('');
                 setIsEditing(false);
-                onAddSuccess?.();
+                // onAddSuccess?.();
+                onAddSuccess?.(result.facility); // 👈 return the new facility object
             } catch (error: any) {
                 toast.error(error.message || 'Failed to add facility');
             }
@@ -50,7 +52,7 @@ export function AddFacilityCard({ onAddSuccess, organizationId }: { onAddSuccess
     }, [isEditing]);
 
     return (
-        <Card className="h-full rounded-2xl border-dashed border-2 border-primary bg-[var(--primary-400)] p-4 relative gap-1">
+        <Card onClick={() => setIsEditing(true)} className="h-full rounded-2xl border-dashed border-2 border-primary bg-[var(--primary-5)] p-4 relative gap-1 cursor-pointer">
             <div className="flex items-center gap-2 text-primary font-semibold">
                 <div className="flex items-center justify-center bg-[linear-gradient(270deg,_rgba(89,148,0,0)_0%,_rgba(89,148,0,0.1)_50%)] rounded-full size-10 text-sm font-medium text-primary cursor-pointer">
                     <Plus />
@@ -62,7 +64,7 @@ export function AddFacilityCard({ onAddSuccess, organizationId }: { onAddSuccess
                         disabled={!isEditing || isPending}
                         value={facilityName}
                         onChange={(e) => setFacilityName(e.target.value)}
-                        placeholder="New Facility"
+                        placeholder="Add New Facility"
                         className="text-sm border-b border-t-0 border-r-0 border-l-0 border-b-primary text-primary focus-visible:border-t-0 focus-visible:border-b focus-visible:border-b-primary focus-visible:ring-ring/0 placeholder:text-primary"
                     />
 

@@ -24,8 +24,8 @@ export default function AddOrganizationForm({ config }: { config: SectionConfig[
   const methods = useForm({
     resolver: zodResolver(schema),
     defaultValues: {},
-  mode: 'onSubmit', // or 'onTouched' or 'all'
-  shouldFocusError: true,
+    mode: 'onSubmit', // or 'onTouched' or 'all'
+    shouldFocusError: true,
   });
 
   const onSubmit = async (data: any) => {
@@ -38,12 +38,12 @@ export default function AddOrganizationForm({ config }: { config: SectionConfig[
     }
 
     toast.success(result.message || 'Organization created successfully');
-    router.push('/organization?page=1');
+    router.push(`/organization/${result.data?.id}`);
   };
 
   return (
     <Form {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} className="px-1 space-y-4 pb-12">
+      <form onSubmit={methods.handleSubmit(onSubmit)} noValidate className="px-1 space-y-4 pb-12">
         <DynamicFormSections config={config} />
 
         <div className="page-container-footer">

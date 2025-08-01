@@ -156,13 +156,13 @@ export async function getRoleById(id: number): Promise<RoleDetail> {
     }>(`/role/${id}`);
 
     if (!res.data.success || !res.data.data) {
-      throw new Error(res.data.message || "Organization not found");
+      throw new Error(res.data.message || "role not found");
     }
 
     return res.data.data;
   } catch (error: any) {
-    console.error("Error fetching organization:", error.message);
-    throw new Error(error.message || "Failed to fetch organization");
+    console.error("Error fetching role:", error.message);
+    throw new Error(error.message || "Failed to fetch role");
   }
 }
 

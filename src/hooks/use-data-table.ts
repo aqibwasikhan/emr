@@ -41,16 +41,28 @@ const DEBOUNCE_MS = 300;
 const THROTTLE_MS = 50;
 
 interface UseDataTableProps<TData>
+  // extends Omit<
+  //   TableOptions<TData>,
+  //   | 'state'
+  //   | 'pageCount'
+  //   | 'getCoreRowModel'
+  //   | 'manualFiltering'
+  //   | 'manualPagination'
+  //   | 'manualSorting'
+  // >,
   extends Omit<
     TableOptions<TData>,
-    | 'state'
     | 'pageCount'
     | 'getCoreRowModel'
     | 'manualFiltering'
     | 'manualPagination'
     | 'manualSorting'
+    | 'rowSelection'
+    | 'onRowSelectionChange'
   >,
   Required<Pick<TableOptions<TData>, 'pageCount'>> {
+  rowSelection?: RowSelectionState;
+  onRowSelectionChange?: (updater: Updater<RowSelectionState>) => void;
   initialState?: Omit<Partial<TableState>, 'sorting'> & {
     sorting?: ExtendedColumnSort<TData>[];
   };
@@ -269,7 +281,7 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
       pagination,
       sorting,
       columnVisibility,
-      rowSelection,
+      rowSelection: props.rowSelection ?? rowSelection,
       columnFilters,
 
     },

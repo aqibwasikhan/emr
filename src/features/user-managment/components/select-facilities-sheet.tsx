@@ -12,14 +12,13 @@ import {
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Facility } from '@/types/facilities';
-import { Column, ColumnDef } from '@tanstack/react-table';
+import { Column, ColumnDef, RowSelectionState } from '@tanstack/react-table';
 import { Check, Plus } from 'lucide-react';
 import { useDataTable } from '@/hooks/use-data-table';
 import { DataTable } from '@/components/ui/table/data-table';
 import { DataTableColumnHeader } from '@/components/ui/table/data-table-column-header';
-import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { CustomInput } from '@/components/ui/custom';
 
@@ -32,8 +31,14 @@ export function SelectFacilitiesSheet({
   onConfirm: (rows: Facility[]) => void;
   facilities: Facility[];
 }) {
-
   const [inputEditable, setInputEditable] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  // console.log('selected', selected,
+  //   Object.fromEntries(
+  //     selected.map((f) => [f.id!, true])
+  //   )
+  // )
   const columns: ColumnDef<Facility>[] = [
     {
       id: 'select',
@@ -73,19 +78,6 @@ export function SelectFacilitiesSheet({
         variant: 'text'
       }
     },
-    // {
-    //   accessorKey: 'facilityType',
-    //   header: ({ column }: { column: Column<Facility, unknown> }) => (
-    //     <DataTableColumnHeader column={column} title='Facility Type' />
-    //   ),
-    //   cell: ({ cell }) => <div>{cell.getValue<string>()|| '--'}</div>,
-    //   enableColumnFilter: true,
-    //   meta: {
-    //     label: 'Facility Type',
-    //     placeholder: 'Search type...',
-    //     variant: 'text'
-    //   }
-    // },
     {
       accessorKey: 'organizationName',
       header: ({ column }: { column: Column<Facility, unknown> }) => (
@@ -104,7 +96,7 @@ export function SelectFacilitiesSheet({
       header: ({ column }: { column: Column<Facility, unknown> }) => (
         <DataTableColumnHeader column={column} title='Facility NPI' />
       ),
-      cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
+      cell: ({ cell }) => <div>{cell.getValue<string>() || 'N/A'}</div>,
       enableColumnFilter: true,
       meta: {
         label: 'NPI Number',
@@ -113,31 +105,38 @@ export function SelectFacilitiesSheet({
       }
     }
   ];
-
   const { table } = useDataTable({
     data: facilities,
     columns,
     pageCount: 1,
     manualFiltering: false,
-    initialState: {
-      rowSelection: Object.fromEntries(
-        selected.map((f) => [f.id!, true])
-      )
-    }
+    initialState: {},
+    rowSelection,
+    onRowSelectionChange: setRowSelection,
+    getRowId: (row) => row.id ? String(row.id) : ''
   });
+
+  useEffect(() => {
+    if (open) {
+      setRowSelection(
+        Object.fromEntries(
+          selected.map((f) => [f.id!, true])
+        )
+      );
+    }
+  }, [open, selected]);
 
   const handleConfirm = () => {
     const selectedFacilities = table
       .getSelectedRowModel()
-      .rows.map((row) => row.original);
-
+      .rows.map((r) => r.original);
     onConfirm(selectedFacilities);
   };
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="secondary"><Plus /> Add Facilities</Button>
+        <Button variant="secondary"><Plus />{selected.length == 0 ? 'Add Facilities' : 'Add More Facilities'}</Button>
       </SheetTrigger>
 
       <SheetContent side="right" className="sm:max-w-[637px]! gap-3">
@@ -155,6 +154,7 @@ export function SelectFacilitiesSheet({
             isSearch
             size="xs"
             className='w-full mb-4'
+            type='search'
             onFocus={() => setInputEditable(true)}
             readOnly={!inputEditable} // Prevent keyboard until user taps
             inputClassName="pt-2"
@@ -163,17 +163,6 @@ export function SelectFacilitiesSheet({
               table.getColumn("facilityName")?.setFilterValue(event.target.value)
             }
           />
-          {/* <Input
-            placeholder="Search facility Name..."
-            value={(table.getColumn("facilityName")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("facilityName")?.setFilterValue(event.target.value)
-            }
-            onFocus={() => setInputEditable(true)}
-            readOnly={!inputEditable} // Prevent keyboard until user taps
-            type='search'
-            className="w-full mb-4"
-          /> */}
           <DataTable
             table={table}
             pagination={false}
@@ -183,7 +172,7 @@ export function SelectFacilitiesSheet({
 
         <SheetFooter className="mt-4 flex justify-between">
           <SheetClose asChild>
-            <div className="page-container-footer">
+            <div className="page-container-footer rounded-bl-xl">
               <Button
                 variant="primary"
                 size="lg"

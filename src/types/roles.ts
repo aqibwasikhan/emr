@@ -1,8 +1,13 @@
+import type { VariantProps } from 'class-variance-authority';
+import { badgeVariants } from '@/components/ui/badge'; 
+
+type BadgeVariant = VariantProps<typeof badgeVariants>['variant'];
 export type SubRole = {
   id: number;
   title?:string;
   name: string;
   description: string;
+    variant?: BadgeVariant;
   scope: string;
   createdAt: string;
   createdBy: string;
@@ -13,6 +18,8 @@ export type Role = {
   name: string;
   role?:string;
   subRoles?: SubRole[];
+  variant?: BadgeVariant;
+
 };
 export type Permission = {
   id: number;

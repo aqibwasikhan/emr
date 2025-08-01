@@ -21,7 +21,7 @@ export default async function Page() {
     <PageContainer scrollable={false} className='relative h-[calc(100dvh-119px)]'>
       <div className="flex flex-1 flex-col space-y-4 overflow-auto no-scrollbar">
         <div className="flex items-start flex-col gap-2">
-          <Heading title="Add Organizations" />
+          <Heading title="Add New Organization" />
           <CustomBreadcrumbs
             items={[
               { label: 'Organizations', href: '/organization?page=1', icon: <OrgIcon className="h-5 w-5" /> },
@@ -31,7 +31,6 @@ export default async function Page() {
         </div>
 
         <Separator />
-
 
         <Suspense fallback={
           <div className='flex flex-1 flex-col space-y-4'>

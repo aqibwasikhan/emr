@@ -20,6 +20,9 @@ type InfiniteScrollContainerProps<T> = {
   renderSkeleton?: (key: number) => React.ReactNode;
   firstItem?: boolean;
   className?: string;
+  showNoResultFound?: boolean;
+  highlightedItemId?: string | number;
+
 };
 type ScrollLayoutWrapperProps = {
   children: ReactNode;
@@ -39,6 +42,8 @@ export function InfiniteScrollContainer<T>({
   renderSkeleton,
   firstItem = false,
   className,
+  showNoResultFound = true,
+  highlightedItemId
 
 }: InfiniteScrollContainerProps<T>) {
   const [items, setItems] = useState<T[]>(initialItems);
@@ -54,7 +59,6 @@ export function InfiniteScrollContainer<T>({
 
   const maxPage = Math.ceil(total / limit);
 
-  // 🧠 RESET LOGIC (filters or refreshKey)
   useEffect(() => {
     const filtersChanged = !isEqual(prevFiltersRef.current, filters);
     const refreshKeyChanged = prevRefreshKeyRef.current !== refreshKey;
@@ -79,6 +83,7 @@ export function InfiniteScrollContainer<T>({
       })();
     }
   }, [filters, refreshKey, fetchPage, limit, router]);
+
 
   // 🔁 INFINITE SCROLL LOGIC
   useEffect(() => {
@@ -123,11 +128,26 @@ export function InfiniteScrollContainer<T>({
 
   return (
     <ScrollLayoutWrapper className={className} viewportRef={scrollViewportRef}>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 py-4">
         {firstItem && renderFirstItem?.()}
-        {items.map((item, index) => renderItem(item, index))}
-      </div>
+        {/* {items.map((item, index) => renderItem(item, index))} */}
+        {items.map((item, index) => {
+          const isHighlighted = highlightedItemId && (item as any).id === highlightedItemId;
+          return (
+            <div key={(item as any).id} className={isHighlighted ? 'animate-fadeInLeft' : ''}>
+              {renderItem(item, index)}
+            </div>
+          );
+        })}
 
+        {/* ✅ Show "No Results" if there’s nothing to show */}
+
+      </div>
+      {!loading && items.length === 0 && showNoResultFound && (
+        <div className="col-span-full text-center text-muted-foreground py-10">
+          No results found.
+        </div>
+      )}
       {items.length < total && (
         <div ref={sentinelRef} className="flex justify-center items-center w-full py-6">
           {loading && renderSkeleton && (
@@ -137,7 +157,7 @@ export function InfiniteScrollContainer<T>({
           )}
         </div>
       )}
-      
+
     </ScrollLayoutWrapper>
   );
 }

@@ -10,17 +10,18 @@ import {
 } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { redirect, useRouter, useSearchParams } from 'next/navigation';
-import { useTransition, useState } from 'react';
+import { useTransition, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 import { CustomInput } from '@/components/ui/custom/CustomInput';
 import { EmailIcon, EyeToggleIcon, RightArrowIcon, UserIcon } from '@/icons'; // Assuming UserIcon is not needed for password field itself
-import { Checkbox } from '@/components/ui/checkbox'; // Import Checkbox
 import { Label } from '@/components/ui/label'; // Import Label
 import { Switch } from '@/components/ui/switch';
 import { useAuthStore } from '@/stores/useAuthStore';
 import Link from 'next/link';
+
+import { getUserDirectory } from '@/app/actions/user-management';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Enter a valid email address' }),
@@ -29,14 +30,15 @@ const formSchema = z.object({
 });
 
 type UserFormValue = z.infer<typeof formSchema>;
+;
 
 export default function UserAuthForm() {
-  const login = useAuthStore((state) => state.login);
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl');
   const [loading, startTransition] = useTransition();
   const [showPassword, setShowPassword] = useState(false);
+
 
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema),
@@ -47,13 +49,15 @@ export default function UserAuthForm() {
     }
   });
 
+
   const onSubmit = async (data: UserFormValue) => {
     startTransition(async () => {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
-        credentials: 'include'
+        credentials: 'include',
+        cache: "no-store"
       });
 
       const result = await res.json();
@@ -62,11 +66,15 @@ export default function UserAuthForm() {
         toast.error(result.errors.non_field_errors ? result.errors.non_field_errors : result.message || 'An error occurred during login');
         return;
       }
-      console.log(result);
+
       // ✅ Set user + tokens in your auth context
-      login(result.data);  // or you can shape result.data before passing
-      toast.success(result.message || 'Signed in successfully!');
-      router.push(callbackUrl || '/organization?page=1'); // Redirect to the callback URL or default to organization page
+      if (result.data.challengeName === "NEW_PASSWORD_REQUIRED") {
+        router.push(callbackUrl || '/auth/change-password');
+      } else {
+        
+        toast.success(result.message || 'Signed in successfully!');
+        router.push(callbackUrl || '/organization?page=1');
+      }
     });
   };
 
@@ -96,7 +104,6 @@ export default function UserAuthForm() {
             </FormItem>
           )}
         />
-
         {/* Password field */}
         <FormField
           control={form.control}
@@ -122,7 +129,6 @@ export default function UserAuthForm() {
             </FormItem>
           )}
         />
-
         {/* Remember Me and Forget Password */}
         <div className='flex items-center justify-between text-sm mt-4'>
           <FormField
@@ -144,7 +150,7 @@ export default function UserAuthForm() {
               </FormItem>
             )}
           />
-          <Link href='#' className='text-base md:text-base font-medium text-primary hover:underline'>
+          <Link href='/auth/forget-password' className='text-base md:text-base font-medium text-primary hover:underline'>
             Forget Password?
           </Link>
         </div>

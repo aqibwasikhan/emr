@@ -37,7 +37,7 @@ export function AssignedFacilityCard({ facility, onRolesUpdate, baseRoles }: Pro
                         <CardDescription className="text-xs 2xl:text-sm">{facility.npiNumber || 'N/A'}</CardDescription>
                         <div className="flex gap-1 flex-wrap mt-3">
                             {facility.assignedRoles?.map((role) => (
-                                <Badge key={role.id} variant="green" className="text-xs rounded">
+                                <Badge key={role.id}  variant={role.variant || 'green'} className="text-xs rounded">
                                     {role.name}
                                 </Badge>
                             ))}
@@ -51,7 +51,8 @@ export function AssignedFacilityCard({ facility, onRolesUpdate, baseRoles }: Pro
                         onClick={() => setOpen(true)}
                     >
                         <Plus className="w-4 h-4 mr-1" />
-                        Assign Roles
+                        {facility.assignedRoles?.length ? 'Edit Roles':'Assign Roles'}
+                        
                     </Button>
                 </div>
             </CardHeader>

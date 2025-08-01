@@ -14,28 +14,14 @@ import { UserAvatarProfile } from '@/components/user-avatar-profile';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useAuthStore } from '@/stores/useAuthStore';
+import { logoutUser } from '@/lib/utils/users/logout-user';
 
 export function UserNav() {
   const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
-  
-  
+
   const router = useRouter();
 
   if (!user) return null;
-
-  const handleLogout = async () => {
-    try {
-      // Optionally you can call an API to clear server-side cookies if needed
-      await fetch('/api/auth/logout', { method: 'POST' }); 
-      logout();  // clear user from context
-      toast.success('Logged out successfully');
-      router.push('/auth/sign-in');
-    } catch (err) {
-      console.error('Logout failed', err);
-      toast.error('Logout failed. Try again.');
-    }
-  };
 
   return (
     <DropdownMenu>
@@ -70,7 +56,7 @@ export function UserNav() {
           <DropdownMenuItem>New Team</DropdownMenuItem> */}
         </DropdownMenuGroup>
         {/* <DropdownMenuSeparator /> */}
-        <DropdownMenuItem onClick={handleLogout}>
+        <DropdownMenuItem onClick={() => logoutUser(router)}>
           Logout
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -95,9 +95,9 @@ export default function RolesListing() {
                 <Table className='bg-background'>
                   <TableHeader>
                     <TableRow className='border-[var(--pri-dark-5)]'>
-                      <TableHead className=' pl-4'>Sub Role Title</TableHead>
-                      <TableHead className=' w-[200px]'>Description</TableHead>
-                      <TableHead className=''>Scope</TableHead>
+                      <TableHead className=' pl-4 w-[250px]'>Sub Role Title</TableHead>
+                      <TableHead className='w-[200px] lg:w-[300px]'>Description</TableHead>
+                      <TableHead className='w-[150px]'>Scope</TableHead>
                       <TableHead className=''>Created On</TableHead>
                       <TableHead className=''>Created By</TableHead>
                       <TableHead className="pr-4  text-center">Actions</TableHead>
@@ -106,7 +106,10 @@ export default function RolesListing() {
                   <TableBody>
                     {roleBlock.subRoles?.map((sub) => (
                       <TableRow key={sub.id} className='border-[var(--pri-grey-4)] '>
-                        <TableCell className="font-semibold pl-4">{sub.name}</TableCell>
+                        <TableCell className="font-semibold pl-4 hover:underline">
+                          <Link href={`/roles/sub/add/${roleBlock.id}?roleId=${sub.id}`}>     {sub.name} </Link>
+
+                        </TableCell>
                         <TableCell className="text-muted-foreground flex flex-wrap w-[200px] lg:w-[300px] whitespace-break-spaces text-balance">{sub.description}</TableCell>
                         <TableCell>
                           <div className="flex flex-wrap gap-1">
@@ -125,10 +128,10 @@ export default function RolesListing() {
                         <TableCell>{sub.createdBy}</TableCell>
                         <TableCell className="pr-4">
                           <div className="flex justify-center gap-2">
-                         <Link href={`/roles/sub/add/${roleBlock.id}?roleId=${sub.id}`}>
+                            <Link href={`/roles/sub/add/${roleBlock.id}?roleId=${sub.id}`}>
                               <PencilIcon className="w-4 h-4 cursor-pointer text-[var(--pri-grey-2)]" />
                             </Link>
-                            <Trash2 className="w-4 h-4 cursor-pointer text-[var(--pri-grey-2)]" />
+                            {/* <Trash2 className="w-4 h-4 cursor-pointer text-[var(--pri-grey-2)]" /> */}
                           </div>
                         </TableCell>
                       </TableRow>

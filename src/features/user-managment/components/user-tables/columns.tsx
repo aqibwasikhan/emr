@@ -6,7 +6,6 @@ import { DataTableColumnHeader } from '@/components/ui/table/data-table-column-h
 import { Mail, CalendarDays, Building2, UserRoundCheck, Briefcase } from 'lucide-react';
 import { User } from '@/types/user-mangment';
 import { UserStatus } from '@/enums/users';
-import { CellAction } from './cell-action';
 import { formatDate } from '@/lib/format';
 
 export const columns: ColumnDef<User>[] = [
@@ -84,21 +83,8 @@ export const columns: ColumnDef<User>[] = [
         <div className="flex flex-wrap gap-1">
           {roles.slice(0, 3).map((role,index) => {
               const key = `${role.id}-${index}`;
-            const variant =
-              role.baseRoleName === 'Clinician'
-                ? 'pink'
-                : role.baseRoleName === 'Admin'
-                  ? 'orange'
-                  : role.baseRoleName === 'therapist'
-                    ? 'blue'
-                    : role.baseRoleName === 'Super Admin'
-                      ? 'purple'
-                      : role.baseRoleName === 'Physician'
-                        ? 'green'
-                        : 'green';
-
             return (
-              <Badge key={key} variant={variant} className="text-xs rounded">
+              <Badge key={key} variant={role.variant || 'green'} className="text-xs rounded">
                 {role.name}
               </Badge>
             );
@@ -165,6 +151,6 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => <CellAction data={row.original} />
+ 
   }
 ];

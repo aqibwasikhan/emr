@@ -9,8 +9,7 @@ import { formatDate } from '@/lib/format';
 
 export function OrganizationCard({ organization }: { organization: Organization }) {
   return (
-    
-    <Card className="h-full rounded-2xl flex flex-col gap-0 py-4  ">
+    <Card className="h-full rounded-2xl flex flex-col gap-0 py-4 hover-scale-card">
       <div>
         <CardHeader className="flex items-start gap-4">
           {/* Circle Avatar Placeholder with initials */}

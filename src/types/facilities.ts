@@ -3,6 +3,7 @@ import { Role } from "./roles";
 export type Facility = {
   id?: number;
   facilityName?: string;
+  name?: string;
   organizationId?: number;
   customerId?: number;
   facilityType?: string;
@@ -16,6 +17,7 @@ export type Facility = {
   updatedAt?: string;
   organizationName?: string;
   assignedRoles?: Role[]; // Array of roles assigned to this facility
+  roles?: Role[]; // Array of roles assigned to this facility
   // Optional derived fields
   code?: string;          // If needed from elsewhere
   status?: string;        // Can be derived from isActive

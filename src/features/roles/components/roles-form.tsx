@@ -27,6 +27,7 @@ export default function RolesForm({ config }: { config: SectionConfig[] }) {
   const router = useRouter();
   const [modulesData, setModulesData] = useState<any[]>([]);
   const [selectedPermissions, setSelectedPermissions] = useState<Record<number, Record<number, Set<number>>>>({});
+  const [loading, setloading] = useState(false)
 
   const schema = generateSchema(config);
   const methods = useForm<RoleFormValues>({
@@ -90,10 +91,13 @@ export default function RolesForm({ config }: { config: SectionConfig[] }) {
           permissions: Array.from(selectedPermissions[mod.id][res.id]),
         }))
     );
+    setloading(true);
+
     const result = await addRole({ ...rest, submission });
     if (!result.success) {
       setApiErrors(result.errors, methods.setError);
       toast.error(result.message || 'Failed to create role');
+      setloading(false);
       return;
     }
 
@@ -117,11 +121,12 @@ export default function RolesForm({ config }: { config: SectionConfig[] }) {
         <div className="page-container-footer">
           <Link
             href="/roles"
+
             className={cn(buttonVariants({ variant: 'tertiary', size: 'lg' }), 'text-xs md:text-sm px-5!')}
           >
             <ChevronLeft /> Back
           </Link>
-          <Button variant="primary" size="lg" type="submit" className="text-xs md:text-sm px-5!">
+          <Button disabled={loading} variant="primary" size="lg" type="submit" className="text-xs md:text-sm px-5!">
             <Check />
           </Button>
         </div>

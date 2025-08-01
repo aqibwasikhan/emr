@@ -8,7 +8,6 @@
 
 @import './theme.css';
 
-
 :root {
   --background: #ffffff;
   --foreground: #434343;
@@ -17,8 +16,9 @@
   --popover: #ffffff;
   --popover-foreground: #434343;
   --primary: #599400;
-  --primary-400: #f7faf2;
-  --primary-500: #eaf3da;
+  --primary-3: #d1eca0;
+  --primary-4: #eaf3da;
+  --primary-5: #f7faf2;
   --primary-foreground: #ffffff;
   --secondary: #007a8b;
   --secondary-200: #48acb9;
@@ -33,9 +33,9 @@
   --pri-grey-1: #676767;
   --pri-grey-2: #6e6f72;
   --pri-grey-3: #8b8c8e;
-  --pri-grey-4: #ECECEC;
+  --pri-grey-4: #ececec;
   --pri-grey-5: #f8f8f8;
-  --pri-dark-5: #C5C5C7;
+  --pri-dark-5: #c5c5c7;
   --border: #d9d9d9;
   --input: #ebebeb;
   --ring: #a8a9aa;
@@ -67,11 +67,10 @@
     0 1px 2px -1px hsl(0 0% 0% / 0.02);
   --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.02),
     0 2px 4px -1px hsl(0 0% 0% / 0.02);
-  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.02),
-    0 4px 6px -1px hsl(0 0% 0% / 0.02);
-  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.02),
-    0 8px 10px -1px hsl(0 0% 0% / 0.02);
-  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-lg: 0 1px 5px 0px hsla(0, 0%, 0%, 0.02),
+    0 4px 5px -1px hsl(0 0% 0% / 0.02);
+  --shadow-xl: 0px 0px 20px 0px rgba(210, 210, 210, 0.596);
+  --shadow-2xl: 0px 0px 70px 0px rgba(67, 67, 67, 0.45);
   --spacing: 0.24rem;
   --gradient: linear-gradient(
     135deg,
@@ -97,8 +96,9 @@
   --popover: #09090b;
   --popover-foreground: #fafafa;
   --primary: #fafafa;
-  --primary-500: #eaf3da;
-  --primary-400: #def4b8;
+  --primary-3: #d1eca0;
+  --primary-4: #eaf3da;
+  --primary-5: #def4b8;
   --primary-foreground: #18181b;
   --secondary: #007a8b;
   --secondary-foreground: #fafafa;
@@ -114,7 +114,7 @@
   --pri-grey-3: #8b8c8e;
   --pri-grey-4: #27272a;
   --pri-grey-5: #27272a;
-  --pri-dark-5: #C5C5C7;
+  --pri-dark-5: #c5c5c7;
   --border: #4d4d4d;
   --input: #27272a;
   --ring: #d4d4d8;
@@ -148,9 +148,8 @@
     0 2px 4px -1px hsl(0 0% 0% / 0.02);
   --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.02),
     0 4px 6px -1px hsl(0 0% 0% / 0.02);
-  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.02),
-    0 8px 10px -1px hsl(0 0% 0% / 0.02);
-  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xl: 0px 0px 50px 0px rgba(255, 255, 255, 0.201);
+  --shadow-2xl: 0px 0px 70px 0px rgba(255, 255, 255, 0.201);
   --gradient: linear-gradient(
     135deg,
     #007a8b 0%,
@@ -169,7 +168,7 @@
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
-  --color-primary-500: var(--primary-500);
+  --color-primary-500: var(--primary-4);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -291,6 +290,13 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555; /* Darker gray on hover */
+}
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  /* transition:
+    background-color 0s 600000s,
+    color 0s 600000s !important; */
+    background-color: transparent !important;
 }
 /* now import your custom Tailwind classes */
 @import '../styles/custom.css';

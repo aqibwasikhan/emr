@@ -35,10 +35,19 @@ export default function SubRoleEditForm({
   const [modulesData, setModulesData] = useState<any[]>(initialValues.modules || []);
   const [selectedPermissions, setSelectedPermissions] = useState<Record<number, Record<number, Set<number>>>>({});
   const [initialized, setInitialized] = useState(false);
+  const [loading, setloading] = useState(false)
 
   const baseInitialModuleIds = baseInitialValues.modules?.map((m: any) => m.id) || [];
   const initialModuleIds = initialValues.modules?.map((m: any) => m.id) || [];
-
+  useEffect(() => {
+    if (initialValues) {
+      // reinitialize form values or trigger state updates
+      methods.reset({
+        ...initialValues,
+        module: initialValues.modules?.map((m: any) => m.id) || [],
+      });
+    }
+  }, [initialValues]);
   const processedConfig: SectionConfig[] = config.map((section) => {
     return {
       ...section,
@@ -171,12 +180,15 @@ export default function SubRoleEditForm({
       baseRoleId: baseInitialValues.id,
       isBaseRole: false,
     };
+    setloading(true);
 
     const result = await  updateRole(initialValues.id, payload);
 
     if (!result.success) {
       setApiErrors(result.errors, methods.setError);
       toast.error(result.message || 'Failed to create sub-role');
+    setloading(false);
+
       return;
     }
 
@@ -204,7 +216,7 @@ export default function SubRoleEditForm({
           >
             <ChevronLeft /> Back
           </Link>
-          <Button variant="primary" size="lg" type="submit" className="text-xs md:text-sm px-5!">
+          <Button  disabled={loading}  variant="primary" size="lg" type="submit" className="text-xs md:text-sm px-5!">
             <Check />
           </Button>
         </div>

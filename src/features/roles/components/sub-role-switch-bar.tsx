@@ -82,7 +82,7 @@ export const SubRoleSwitchBar = ({ subRoles, config, baseInitialValues }: RoleSw
               {role.name}
             </button>
             <Separator
-              className='bg-[var(--pri-grey-2)] py-2'
+              className='bg-[var(--pri-grey-2)] py-2 data-[orientation=vertical]:h-3/4'
               orientation="vertical"
             />
           </div>

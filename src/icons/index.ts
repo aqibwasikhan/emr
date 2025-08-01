@@ -11,3 +11,5 @@ export { LogoIcon } from "./LogoIcon";
 export { PencilIcon } from "./PencilIcon";
 export { UserRoleIcon } from "./UserRoleIcon"
 export { DoubleChevronLeftIcon } from "./DoubleChevronLeftIcon"
+export { CalendarIcon } from "./CalendarIcon"
+export { VaultIcon } from "./VaultIcon"

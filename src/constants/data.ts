@@ -25,7 +25,7 @@ export const navItems: NavItem[] = [
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
-    title: 'Organization',
+    title: 'Organizations',
     url: '/organization?page=1',
     icon: 'org',
     shortcut: ['o', 'o'],
@@ -44,6 +44,14 @@ export const navItems: NavItem[] = [
     title: 'User Management',
     url: '/user-management',
     icon: 'userSetting',
+    shortcut: ['k', 'k'],
+    isActive: false,
+    items: [] // No child items
+  },
+  {
+    title: 'Audit Logs',
+    url: '/audit-logs',
+    icon: 'calender',
     shortcut: ['k', 'k'],
     isActive: false,
     items: [] // No child items

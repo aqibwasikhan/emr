@@ -35,6 +35,7 @@ export default function SubRoleForm({
   const [modulesData, setModulesData] = useState<any[]>(baseInitialValues.modules || []);
   const [selectedPermissions, setSelectedPermissions] = useState<Record<number, Record<number, Set<number>>>>({});
   const [initialized, setInitialized] = useState(false);
+  const [loading, setloading] = useState(false)
 
   const initialModuleIds = baseInitialValues.modules?.map((m: any) => m.id) || [];
 
@@ -169,12 +170,15 @@ export default function SubRoleForm({
       baseRoleId: baseInitialValues.id,
       isBaseRole: false,
     };
+    setloading(true);
 
     const result = await addRole(payload);
 
     if (!result.success) {
       setApiErrors(result.errors, methods.setError);
       toast.error(result.message || 'Failed to create sub-role');
+    setloading(false);
+
       return;
     }
 
@@ -202,7 +206,7 @@ export default function SubRoleForm({
           >
             <ChevronLeft /> Back
           </Link>
-          <Button variant="primary" size="lg" type="submit" className="text-xs md:text-sm px-5!">
+          <Button  disabled={loading}  variant="primary" size="lg" type="submit" className="text-xs md:text-sm px-5!">
             <Check />
           </Button>
         </div>

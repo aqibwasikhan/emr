@@ -7,6 +7,7 @@ interface AuthState {
   user: AuthUser | null;
   login: (userData: AuthUser) => void;
   logout: () => void;
+  reset: () => void; // ✅ Add this
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -15,9 +16,10 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       login: (userData) => set({ user: userData }),
       logout: () => set({ user: null }),
+      reset: () => set({ user: null }) // ✅ Implement reset
     }),
     {
-      name: 'auth-store', // localStorage key
+      name: 'auth-store',
     }
   )
 );

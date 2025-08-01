@@ -3,15 +3,15 @@ import { Separator } from '@/components/ui/separator';
 import { Heading } from '@/components/ui/heading';
 import { CustomBreadcrumbs } from '@/components/ui/custom/CustomBreadcrumbs';
 import { UserSettingIcon } from '@/icons';
-import { Suspense } from 'react';
-import AddOrganizationForm from '@/features/organization/components/add-organization-form';
-import { CommonSkeleton } from '@/components/shared/common-skeleton';
+// import { Suspense } from 'react';
+// import AddOrganizationForm from '@/features/organization/components/add-organization-form';
+// import { CommonSkeleton } from '@/components/shared/common-skeleton';
 import { getForms } from '@/app/actions/forms';
-import AddUserForm from '@/features/user-managment/components/add-user-form';
+// import AddUserForm from '@/features/user-managment/components/add-user-form';
 import AddUserFormWizard from '@/features/user-managment/add-user-form-wizard';
 
 export const metadata = {
-  title: 'EMR: Add User'
+  title: 'Add User'
 };
 export const dynamic = 'force-dynamic';
 

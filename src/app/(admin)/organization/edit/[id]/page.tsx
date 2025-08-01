@@ -34,12 +34,12 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                     </div>
                 }>
                     <div className="flex items-start flex-col gap-2">
-                        <Heading title="Add Organizations" />
+                        <Heading title="Edit Organization" />
                         <CustomBreadcrumbs
                             items={[
                                 { label: 'Organizations', href: '/organization?page=1', icon: <OrgIcon className="h-5 w-5" /> },
                                 { label: orgData.name || '',href: `/organization/${orgData?.id}`, active: true },
-                                { label: 'Edit Organizations', active: true }
+                                { label: 'Edit Organization', active: true }
                             ]}
                         />
                     </div>

@@ -1,7 +1,6 @@
 import Providers from '@/components/layout/providers';
 import { Toaster } from '@/components/ui/sonner';
 import { proximaNova } from '@/lib/font';
-// import { fontVariables } from '@/lib/font';
 import ThemeProvider from '@/components/layout/ThemeToggle/theme-provider';
 import { cn } from '@/lib/utils';
 import type { Metadata, Viewport } from 'next';
@@ -10,7 +9,6 @@ import NextTopLoader from 'nextjs-toploader';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import './globals.css';
 import './theme.css';
-export const dynamic = 'force-dynamic';
 
 const META_THEME_COLORS = {
   light: '#ffffff',
@@ -25,6 +23,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: META_THEME_COLORS.light
 };
+export const dynamic = 'force-dynamic';
 
 export default async function RootLayout({
   children
@@ -33,7 +32,6 @@ export default async function RootLayout({
 }) {
   const cookieStore = await cookies();
 
-
   // token exists → go to overview
   const activeThemeValue = cookieStore.get('active_theme')?.value;
   const isScaled = activeThemeValue?.endsWith('-scaled');
@@ -41,7 +39,6 @@ export default async function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
-        
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -62,10 +59,7 @@ export default async function RootLayout({
           proximaNova.variable
         )}
       >
-
-
-
-        <NextTopLoader speed={2000} color="linear-gradient(137deg, #007A8B -1.5%, #3AAF4D 70.96%, #A8CB38 126.33%)" showSpinner={false} />
+        <NextTopLoader  color="linear-gradient(137deg, #007A8B -1.5%, #3AAF4D 70.96%, #A8CB38 126.33%)" showSpinner={false} />
         <NuqsAdapter>
           <ThemeProvider
             attribute='class'

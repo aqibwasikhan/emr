@@ -15,6 +15,7 @@ import DynamicFormSections from '@/components/dynamic-forms/dynamic-form-section
 import { updateFacility } from '@/app/actions/facility';
 import { setApiErrors } from '@/lib/utils/forms/setApiErrors';
 import { useState } from 'react';
+import { disableFieldsInConfig, omitKeys } from '@/lib/utils/forms/forms';
 
 export default function EditFacilityForm({
   config,
@@ -26,7 +27,9 @@ export default function EditFacilityForm({
   id: number;
 }) {
   const router = useRouter();
-  const schema = generateSchema(config);
+  const updatedConfig = disableFieldsInConfig(config, ['organizationId']);
+  const schema = generateSchema(updatedConfig);
+
   const [loading, setloading] = useState(false)
   const methods = useForm({
     resolver: zodResolver(schema),
@@ -34,7 +37,8 @@ export default function EditFacilityForm({
   });
   const onSubmit = async (data: any) => {
     setloading(true)
-    const result = await updateFacility(id, data);
+     const payload = omitKeys(data, ['organizationId'])
+    const result = await updateFacility(id, payload);
     if (!result.success) {
       // Set API errors into form state
       setApiErrors(result.errors, methods.setError);
@@ -51,7 +55,7 @@ export default function EditFacilityForm({
   return (
     <Form {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} className="px-1 space-y-4 pb-12">
-        <DynamicFormSections config={config} />
+        <DynamicFormSections config={updatedConfig} />
 
         <div className="page-container-footer">
           <Link href={`/organization/${initialValues?.organizationId}`} className={cn(buttonVariants({ variant: 'tertiary', size: 'lg' }), 'text-xs md:text-sm px-5!')}>

@@ -44,7 +44,7 @@ export default function RenderField({ field }: { field: FieldConfig }) {
                     ref={controllerField.ref}
                     value={safeInputValue(controllerField.value)}
                     placeholder={field.placeholder}
-                  // {...controllerField}
+                    disabled={field.disabled}
                   />
                 </FormControl>
                 <FormMessage />
@@ -60,6 +60,7 @@ export default function RenderField({ field }: { field: FieldConfig }) {
                     value={controllerField.value?.toString() ?? ''}
                     onValueChange={controllerField.onChange}
                     placeholder={field.placeholder}
+                    disabled={field.disabled}
                   >
                     <SelectGroup>
                       <SelectLabel>{field.label}</SelectLabel>
@@ -93,6 +94,8 @@ export default function RenderField({ field }: { field: FieldConfig }) {
                     placeholder={field.placeholder}
                     minLength={field.minLength}
                     maxLength={field.maxLength}
+                    disabled={field.disabled}
+                     
                   // {...controllerField}
                   />
                 </FormControl>
@@ -108,6 +111,7 @@ export default function RenderField({ field }: { field: FieldConfig }) {
                   <FormControl>
 
                     <Switch
+                      disabled={field.disabled}
                       checked={controllerField.value ?? false}
                       onCheckedChange={controllerField.onChange}
                     />
@@ -123,6 +127,7 @@ export default function RenderField({ field }: { field: FieldConfig }) {
                 <FormControl>
                   <Checkbox
                     id={field.name}
+                    disabled={field.disabled}
                     checked={controllerField.value ?? false}
                     onCheckedChange={controllerField.onChange}
                   />
@@ -137,20 +142,20 @@ export default function RenderField({ field }: { field: FieldConfig }) {
                 <div className="flex flex-wrap gap-4">
                   {field.options?.map((opt, idx) => (
                     <div key={idx} className="flex items-center gap-1 ">
-                     
-                        <Checkbox
-                          id={`${field.name}-${opt.value}`}
-                          disabled={opt.disable}
-                          checked={Array.isArray(controllerField.value) ? controllerField.value.includes(opt.value) : false}
-                          onCheckedChange={(checked) => {
-                            const current = Array.isArray(controllerField.value) ? controllerField.value : [];
-                            const updatedValue = checked
-                              ? [...current, opt.value]
-                              : current.filter((val) => val !== opt.value);
-                            controllerField.onChange(updatedValue);
-                          }}
-                        />
-                        <label className={opt.disable ? 'cursor-not-allowed opacity-50 text-ring' : ''} htmlFor={`${field.name}-${opt.value}`}>{opt.label}</label>
+
+                      <Checkbox
+                        id={`${field.name}-${opt.value}`}
+                        disabled={opt.disable}
+                        checked={Array.isArray(controllerField.value) ? controllerField.value.includes(opt.value) : false}
+                        onCheckedChange={(checked) => {
+                          const current = Array.isArray(controllerField.value) ? controllerField.value : [];
+                          const updatedValue = checked
+                            ? [...current, opt.value]
+                            : current.filter((val) => val !== opt.value);
+                          controllerField.onChange(updatedValue);
+                        }}
+                      />
+                      <label className={opt.disable ? 'cursor-not-allowed opacity-50 text-ring' : ''} htmlFor={`${field.name}-${opt.value}`}>{opt.label}</label>
                     </div>
                   ))}
                 </div>

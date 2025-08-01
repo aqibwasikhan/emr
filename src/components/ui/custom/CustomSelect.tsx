@@ -18,7 +18,7 @@ import { serialize } from '@/lib/searchparams';
 const wrapperVariants = {
     default: 'border text-foreground hover:shadow-lg focus-within:ring-2 focus-within:ring-offset-1 focus-within:ring-ring',
     error: 'border-destructive text-destructive focus-within:ring-1 focus-within:ring-destructive',
-    disabled: 'border-[var(--border)] bg-[var(--muted)]!  text-[var(--muted-foreground)]  opacity-50',
+    disabled: 'border-[var(--border)] bg-muted  text-[var(--muted-foreground)]  opacity-50',
 };
 
 const sizeVariants = {

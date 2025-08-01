@@ -1,4 +1,4 @@
-import { OrgIcon, UserSettingIcon ,DashboardIcon, UserRoleIcon} from '@/icons';
+import { OrgIcon, UserSettingIcon ,DashboardIcon, UserRoleIcon,CalendarIcon} from '@/icons';
 
 import {
   IconAlertTriangle,
@@ -42,6 +42,7 @@ export const Icons = {
   org: OrgIcon,
   userSetting: UserSettingIcon,
   userRole: UserRoleIcon,
+  calender:CalendarIcon,
   logo: IconCommand,
   login: IconLogin,
   close: IconX,

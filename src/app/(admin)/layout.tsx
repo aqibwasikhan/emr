@@ -1,6 +1,7 @@
 import KBar from '@/components/kbar';
 import AppSidebar from '@/components/layout/app-sidebar';
 import Header from '@/components/layout/header';
+import UserDirectoryLoader from '@/components/layout/UserDirectoryLoader';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
@@ -18,21 +19,21 @@ export default async function DashboardLayout({
 }) {
   // Persisting the sidebar state in the cookie.
   const cookieStore = await cookies();
-//   const token = cookieStore.get('token')?.value;
+  //   const token = cookieStore.get('token')?.value;
 
-// if (!token) {
-//   redirect('/auth/sign-in');
-// }
+  // if (!token) {
+  //   redirect('/auth/sign-in');
+  // }
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
   // const defaultOpen = false
   return (
     <KBar>
-      
-       {/* Wrap everything in a column flex container */}
-       <div className='max-w-[1920px] mx-auto'>
 
-      <SidebarProvider defaultOpen={defaultOpen}>
-        {/* <div className="flex h-screen flex-col"> */}
+      {/* Wrap everything in a column flex container */}
+      <div className='max-w-[1920px] mx-auto'>
+        <UserDirectoryLoader />
+        <SidebarProvider defaultOpen={defaultOpen}>
+          {/* <div className="flex h-screen flex-col"> */}
           {/* 1) HEADER spans full width */}
           <Header />
 
@@ -46,9 +47,9 @@ export default async function DashboardLayout({
               {children}
             </SidebarInset>
           </div>
-        {/* </div> */}
-      </SidebarProvider>
-       </div>
+          {/* </div> */}
+        </SidebarProvider>
+      </div>
 
     </KBar>
   );
